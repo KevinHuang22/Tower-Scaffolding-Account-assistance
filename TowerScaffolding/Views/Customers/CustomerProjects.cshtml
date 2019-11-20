@@ -1,0 +1,112 @@
+﻿@model PaginatedList<TowerScaffolding.Models.Project>
+
+@{
+    ViewData["Title"] = "CustomerProject";
+}
+
+<h2>CustomerProject</h2>
+
+<p>
+    @*<a asp-action="Create" asp-route-id="">Create New</a>*@
+</p>
+@if (ViewData["CurrentFillter"] != null)
+{
+    <a asp-action="CustomerProjects">Back to Full List</a>
+}
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["IDSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">
+                    Site ID
+                </a>
+            </th>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">
+                    Site
+                </a>
+            </th>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["AddressSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">
+                    Address
+                </a>
+            </th>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["TMSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">
+                    Tower Manager
+                </a>
+            </th>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["StatusSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">
+                    Status
+                </a>
+            </th>
+            <th>
+                QS
+            </th>
+            <th>
+                Site Manager
+            </th>
+            <th>
+                Customer
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SiteID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Site)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Address)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TowerManager)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Status)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.QS)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SiteManager)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Customer.CustomerName)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-controller="Projects" asp-route-id="@item.SiteID">Edit</a> |
+                    <a asp-action="Details" asp-controller="Projects" asp-route-id="@item.SiteID">Details</a> |
+                    <a asp-action="Delete" asp-controller="Projects" asp-route-id="@item.SiteID">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-page="@(Model.PageIndex - 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-default @prevDisabled">
+    Previous
+</a>
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-page="@(Model.PageIndex + 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-default @nextDisabled">
+    Next
+</a>
+

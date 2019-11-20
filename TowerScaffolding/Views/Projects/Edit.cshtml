@@ -1,0 +1,90 @@
+﻿@model TowerScaffolding.Models.Project
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h2>Edit</h2>
+
+<h4>Project</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="SiteID" />
+            <div class="form-group">
+                <label asp-for="SiteID" class="control-label"></label>
+                <div>@Html.DisplayFor(model => model.SiteID)</div>
+            </div>
+            <input type="hidden" asp-for="RowVersion" />
+            <div class="form-group">
+                <label asp-for="Customer" class="control-label"></label>
+                <select asp-for="CustomerID" class="form-control" asp-items="ViewBag.CustomerID">
+                    <option value="">-- Select Customer --</option>
+                </select>
+                <span asp-validation-for="CustomerID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Site" class="control-label"></label>
+                <input asp-for="Site" class="form-control" />
+                <span asp-validation-for="Site" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Address" class="control-label"></label>
+                <input asp-for="Address" class="form-control" />
+                <span asp-validation-for="Address" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Branch" class="control-label"></label>
+                <select asp-for="Branch" class="form-control" asp-items="ViewBag.Branch">
+                    <option value="">-- Select Branch --</option>
+                </select>
+                <span asp-validation-for="Branch" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TowerManager" class="control-label"></label>
+                <input asp-for="TowerManager" class="form-control" />
+                <span asp-validation-for="TowerManager" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Status" class="control-label"></label>
+                <select asp-for="Status" class="form-control" asp-items="ViewBag.Status">
+                    <option value="">-- Select Status --</option>
+                </select>
+                <span asp-validation-for="Status" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="QS" class="control-label"></label>
+                <input asp-for="QS" class="form-control" />
+                <span asp-validation-for="QS" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SiteManager" class="control-label"></label>
+                <input asp-for="SiteManager" class="form-control" />
+                <span asp-validation-for="SiteManager" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Quote" class="control-label"></label>
+                <input asp-for="Quote" class="form-control" />
+                <span asp-validation-for="Quote" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Invoice" class="control-label"></label>
+                <input asp-for="Invoice" class="form-control" />
+                <span asp-validation-for="Invoice" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+@*@if()*@
+<div>
+    <a asp-action="Index" asp-route-id=@Model.CustomerID>Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

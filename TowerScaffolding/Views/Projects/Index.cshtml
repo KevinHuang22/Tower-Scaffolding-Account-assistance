@@ -1,0 +1,155 @@
+﻿@model PaginatedList<TowerScaffolding.Models.Project>
+
+@{
+    ViewData["Title"] = "Projects";
+}
+
+<h2>Projects/Sites</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+@if (ViewData["CurrentFillter"] != null)
+{
+    <a asp-action="Index">Back to Full List</a>
+}
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["IDSortParm"]"
+                   asp-route-currentFilter="@ViewData["CurrentFilter"]">
+                    Site ID
+                </a>
+            </th>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">
+                    Site
+                </a>
+            </th>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["AddressSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">
+                    Address
+                </a>
+            </th>
+            <th>
+                Branch
+            </th>
+            <th>
+                Customer
+            </th>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["TMSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">
+                    Tower Manager
+                </a>
+            </th>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["StatusSortParm"]"
+                   asp-route-currentFilter="@ViewData["CurrentFilter"]">
+                    Status
+                </a>
+            </th>
+            <th>
+                QS
+            </th>
+            <th>
+                Site Manager
+            </th>
+            <th>
+                Quote
+            </th>
+            <th>
+                Invoice
+            </th>
+            <th>
+                <a asp-action="ExportExcel" asp-route-customerId="@ViewData["CustomerId"]"
+                   asp-route-searchString="@ViewData["CurrentFilter"]">
+                    Export Excel
+                </a>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SiteID)
+                </td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.SiteID">@Html.DisplayFor(modelItem => item.Site)</a>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Address)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Branch)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Customer.CustomerName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TowerManager)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Status)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.QS)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SiteManager)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Quote)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Invoice)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.SiteID" asp-route-customerId="@item.CustomerID">Edit</a>
+
+                    <a asp-action="Delete" asp-route-id="@item.SiteID">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+    int pagelstCount = Model.TotalPage;
+}
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-page="@(Model.PageIndex - 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-default @prevDisabled">
+    Previous
+</a>
+@for (int i = 1; i <= pagelstCount; i++)
+{
+
+    <a asp-action="Index"
+       asp-route-sortOrder="@ViewData["CurrentSort"]"
+       asp-route-page="@i"
+       asp-route-currentFilter="@ViewData["CurrentFilter"]">
+        @if (i == Model.PageIndex)
+        {
+            <strong>@i</strong>
+        }
+        else
+        {
+            @i
+        }
+    </a>
+}
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-page="@(Model.PageIndex + 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-default @nextDisabled">
+    Next
+</a>
+

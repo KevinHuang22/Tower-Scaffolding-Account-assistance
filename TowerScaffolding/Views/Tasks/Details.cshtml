@@ -1,0 +1,108 @@
+﻿@model TowerScaffolding.Models.Task
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Task</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Date)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Date)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Site)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Site.Site)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Progress)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Progress)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Staff)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Staff)
+        </dd>
+        <dt>
+            Number Of Staff
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.NumberOfStaff)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Start)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Start)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Finish)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Finish)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Total)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Total) hrs
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Vehicle)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Vehicle)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Returned)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Returned)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Quality)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Quality)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.LeadingHand)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.LeadingHand.FirstName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.WorkDescription)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.WorkDescription)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.TaskStatus)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.TaskStatus)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Comment)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Comment)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.TaskID" asp-route-preUrl="@ViewBag.preUrl">Edit</a> |
+    <a herf="@ViewBag.preUrl">Back to List</a>
+</div>

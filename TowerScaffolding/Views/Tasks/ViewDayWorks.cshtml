@@ -1,0 +1,130 @@
+﻿@model TowerScaffolding.Models.TowerScaffoldingViewModels.ViewDayWorks
+@{
+    ViewData["Title"] = "ViewDayWorks";
+}
+
+<h2>View DayWorks</h2>
+
+@if (null != TempData["alertMessage"])
+{
+    <script type="text/javascript">
+       alert("@TempData["alertMessage"]");
+    </script>
+}
+
+<p>
+    <a asp-controller="DayWorks" asp-action="Create" asp-route-taskId="@ViewData["TaskID"]" asp-route-preUrl="@ViewBag.preUrl">Assign a new DayWork to this Task</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            @*<th>Task No.</th>*@
+            <th>Date</th>
+            <th>Customer</th>
+            <th>Site</th>
+            <th>Leading Hand</th>
+            <th>Start</th>
+            <th>Total</th>
+            <th>Staff</th>
+            <th>Vehicle</th>
+            <th>Returned</th>
+            <th>Quality</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var task in Model.Tasks)
+        {
+            if (task.TaskID == (int?)ViewData["TaskID"])
+            {
+                <tr class="success">
+                    @*<td>@Html.DisplayFor(modelItem => task.TaskID)</td>*@
+                    <td>@Html.DisplayFor(modelItem => task.Date)</td>
+                    <td>@Html.DisplayFor(modelItem => task.Site.Customer.CustomerName)</td>
+                    <td>@Html.DisplayFor(modelItem => task.Site.Site)</td>
+                    <td>@Html.DisplayFor(modelItem => task.LeadingHand.FullName)</td>
+                    <td>@Html.DisplayFor(modelItem => task.Start)</td>
+                    <td>@Html.DisplayFor(modelItem => task.Total)</td>
+                    <td>@Html.DisplayFor(modelItem => task.Staff)</td>
+                    <td>@Html.DisplayFor(modelItem => task.Vehicle)</td>
+                    <td>@Html.DisplayFor(modelItem => task.Returned)</td>
+                    <td>@Html.DisplayFor(modelItem => task.Quality)</td>
+                    <td>
+                        <a href="@ViewBag.preUrl">Back</a> |
+                        <a asp-action="Edit" asp-route-id="@task.TaskID" asp-route-preUrl="@ViewBag.preUrl">Edit</a> |
+                        <a asp-action="Delete" asp-route-id="@task.TaskID">Delete</a>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+<hr />
+@if (Model.DayWorks.Count() > 0)
+{
+    <h4>DayWorks of Selected Task</h4>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    <a asp-action="ViewDayWorks" asp-route-sortOrder="@ViewData["IDSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">
+                        DayWork No.
+                    </a>
+                </th>
+                <th>
+                    <a asp-action="ViewDayWorks" asp-route-sortOrder="@ViewData["DateSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">
+                        Date
+                    </a>
+                </th>
+                <th>
+                    <a asp-action="ViewDayWorks" asp-route-sortOrder="@ViewData["TypeSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">
+                        Type
+                    </a>
+                </th>
+                <th>
+                    <a asp-action="ViewDayWorks" asp-route-sortOrder="@ViewData["QtySortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">
+                        Qty
+                    </a>
+                </th>
+                <th>
+                    Uom
+                </th>
+                <th>
+                    Truck
+                </th>
+                <th>
+                    TowerScaffolding
+                </th>
+                <th>
+                    Workers
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var dayWork in Model.DayWorks)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => dayWork.DayWorkID)</td>
+                    <td>@Html.DisplayFor(modelItem => dayWork.Date)</td>
+                    <td>@Html.DisplayFor(modelItem => dayWork.Type)</td>
+                    <td>@Html.DisplayFor(modelItem => dayWork.Qty)</td>
+                    <td>@Html.DisplayFor(modelItem => dayWork.Uom)</td>
+                    <td>@Html.DisplayFor(modelItem => dayWork.Truck)</td>
+                    <td>@Html.DisplayFor(modelItem => dayWork.Scaffolder)</td>
+                    <td>@Html.DisplayFor(modelItem => dayWork.NumOfWorkers)</td>
+                    <td>
+                        <a asp-action="Edit" asp-controller="DayWorks" asp-route-id="@dayWork.DayWorkID" asp-route-preUrl="@ViewBag.preUrl">Edit</a> |
+                        <a asp-action="Details" asp-controller="DayWorks" asp-route-id="@dayWork.DayWorkID">Details</a> |
+                        <a asp-action="Delete" asp-controller="DayWorks" asp-route-id="@dayWork.DayWorkID">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <h4>There is no such DayWorks belong to Selected Task</h4>
+}

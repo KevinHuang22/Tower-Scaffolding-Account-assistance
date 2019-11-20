@@ -1,0 +1,144 @@
+﻿@model PaginatedList<TowerScaffolding.Models.ApplicationUser>
+
+@{
+    ViewData["Title"] = "Menbers";
+}
+
+<h2>Staffs Management</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<center>
+    <table class="table" style="border:1px">
+        <tr>
+            <td><a asp-action="Index" asp-route-branch="Auckland">Auckland</a></td>
+            <td><a asp-action="Index" asp-route-branch="Christchurch">Christchurch</a></td>
+            <td><a asp-action="Index" asp-route-branch="Tauranga">Tauranga</a></td>
+            <td><a asp-action="Index" asp-route-branch="Timaru">Timaru</a></td>
+        </tr>
+    </table>
+</center>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                User name
+            </th>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["fNameSortParm"]"
+                   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                   asp-route-branch="@ViewData["branch"]">
+                    First name
+                </a>
+            </th>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["lNameSortParm"]"
+                   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                   asp-route-branch="@ViewData["branch"]">
+                    Last name
+                </a>
+            </th>
+            <th>
+                Branch
+            </th>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["roleSortParm"]"
+                   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                   asp-route-branch="@ViewData["branch"]">
+                    Role
+                </a>
+            </th>
+            <th>
+                Email
+            </th>
+            <th>
+                Email Confirmed
+            </th>
+            <th>
+                Phone number
+            </th>
+            <th>
+                Phone Number Confirmed
+            </th>
+            <th>
+                Enabled
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FirstName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LastName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Branch)
+                </td>
+                <td>
+                    @*<select class="form-control" asp-items="ViewBag.Roles">
+                              <option value=""></option>
+                        </select>*@
+                    @{
+                        foreach (var user in item.UserRoles)
+                        {
+                            @user.Role.Name <br />
+                        }
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EmailConfirmed)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PhoneNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PhoneNumberConfirmed)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Enabled)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    @if (item.Enabled == true)
+                    {
+                        <a asp-action="EnableDisable" asp-route-id="@item.Id">Disable</a>;
+                    }
+                    else
+                    {
+                        <a asp-action="EnableDisable" asp-route-id="@item.Id">Enable</a>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-page="@(Model.PageIndex - 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-default @prevDisabled">
+    Previous
+</a>
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-page="@(Model.PageIndex + 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-default @nextDisabled">
+    Next
+</a>

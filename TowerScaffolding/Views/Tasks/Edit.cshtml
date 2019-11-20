@@ -1,0 +1,116 @@
+﻿@model TowerScaffolding.Models.Task
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h2>Edit</h2>
+
+<h4>Task</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            @*<input type="hidden" asp-for="TaskID" />*@
+            <input type="hidden" asp-for="RowVersion" />
+            <div class="form-group">
+                <label asp-for="Date" class="control-label"></label>
+                <input asp-for="Date" class="form-control" />
+                <span asp-validation-for="Date" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SiteID" class="control-label"></label>
+                <select asp-for="SiteID" class="form-control" asp-items="ViewBag.ProjectID"></select>
+                <span asp-validation-for="SiteID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LeadingHandID" class="control-label">Leading Hand</label>
+                <select asp-for="LeadingHandID" class="form-control" asp-items="ViewBag.LeadingHandID"></select>
+                <span asp-validation-for="LeadingHandID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WorkDescription" class="control-label">Work Description</label>
+                <textarea asp-for="WorkDescription" class="form-control" aria-label="WorkDescription"></textarea>
+                <span asp-validation-for="WorkDescription" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Staff" class="control-label"></label>
+                <input asp-for="Staff" class="form-control" />
+                <span asp-validation-for="Staff" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Number Of Staff</label>
+                <input asp-for="NumberOfStaff" class="form-control" />
+                <span asp-validation-for="NumberOfStaff" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Progress" class="control-label"></label>
+                <input asp-for="Progress" class="form-control" />
+                <span asp-validation-for="Progress" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Start</label>
+                <input asp-for="Start" type="time" class="form-control" />
+                <span asp-validation-for="Start" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Finish</label>
+                <input asp-for="Finish" type="time" class="form-control" />
+                <span asp-validation-for="Finish" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Vehicle" class="control-label"></label>
+                <input asp-for="Vehicle" class="form-control" />
+                <span asp-validation-for="Vehicle" class="text-danger"></span>
+            </div>
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">U/S/H</span>
+                </div>
+                <input asp-for="U" type="text" aria-label="U" class="form-control">
+                <input asp-for="S" type="text" aria-label="S" class="form-control">
+                <input asp-for="H" type="text" aria-label="H" class="form-control">
+            </div>
+            <div class="form-group">
+                <label asp-for="Returned" class="control-label"></label>
+                <select asp-for="Returned" class="form-control" asp-items="ViewBag.Returned">
+                    <option value="">Returned?</option>
+                </select>
+                <span asp-validation-for="Returned" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Quality" class="control-label"></label>
+                <select asp-for="Quality" class="form-control" asp-items="ViewBag.Quality">
+                    <option value="">-- Select Quality --</option>
+                </select>
+                <span asp-validation-for="Quality" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TaskStatus" class="control-label"></label>
+                <select asp-for="TaskStatus" class="form-control" asp-items="ViewBag.TaskStatus">
+                    <option value="">-- Select Status --</option>
+                </select>
+                <span asp-validation-for="TaskStatus" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Comment" class="control-label"></label>
+                <textarea asp-for="Comment" class="form-control" aria-label="Comment"></textarea>
+                <span asp-validation-for="Comment" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                @*<input asp-for="TaskID" type="submit" class="btn btn-default" />*@
+                <button type="submit" value="@Model.TaskID" class="btn btn-default" asp-route-preUrl="@ViewBag.preUrl">Save</button>
+                <input type="submit" name="submit" value="Save As New Task" class="btn btn-default" asp-route-preUrl="@ViewBag.preUrl"/>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a href="@ViewBag.preUrl">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

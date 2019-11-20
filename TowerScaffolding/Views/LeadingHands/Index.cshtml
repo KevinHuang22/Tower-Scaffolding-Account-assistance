@@ -1,0 +1,210 @@
+﻿@model PaginatedList<TowerScaffolding.Models.LeadingHand>
+
+@{
+    ViewData["Title"] = "LeadingHands";
+}
+
+<h2>Leading hands</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["codeSortParm"]"
+                   asp-route-currentFilter="@ViewData["CurrentFilter"]">
+                    Code
+                </a>
+            </th>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["fNameSortParm"]"
+                   asp-route-currentFilter="@ViewData["CurrentFilter"]">
+                    First Name
+                </a>
+            </th>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["lNameSortParm"]"
+                   asp-route-currentFilter="@ViewData["CurrentFilter"]">
+                    Last Name
+                </a>
+            </th>
+            <th>
+                Scaffold Ticket
+            </th>
+            <th>
+                Drivers Licence
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ID)
+                </td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.ID">@Html.DisplayFor(modelItem => item.FirstName)</a>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LastName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ScaffoldTicket)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DriversLicence)
+                </td>
+                <td>
+                    <a asp-controller="Tasks" asp-action="Index" asp-route-lhId="@item.ID">View Tasks</a> |
+                    <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
+                    <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+    var pagelstCount = Model.TotalPage;
+}
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-page="@(Model.PageIndex - 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-default @prevDisabled">
+    Previous
+</a>
+@for (int i = 1; i <= pagelstCount; i++)
+{
+
+    <a asp-action="Index"
+       asp-route-sortOrder="@ViewData["CurrentSort"]"
+       asp-route-page="@i"
+       asp-route-currentFilter="@ViewData["CurrentFilter"]">
+        @if (i == Model.PageIndex)
+        {
+            <strong>@i</strong>
+        }
+        else
+        {
+            @i
+        }
+    </a>
+}
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-page="@(Model.PageIndex + 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-default @nextDisabled">
+    Next
+</a>
+@*@if (Model.Tasks != null)
+    {
+        <h4>Tasks Assigned by Selected Leading hand</h4>
+        <table class="table">
+            <tr>
+                <th>Task No.</th>
+                <th>Date</th>
+                <th>Site</th>
+                <th>Company</th>
+                <th>Progress</th>
+                <th>Total</th>
+                <th>Returned</th>
+                <th>Quality</th>
+                <th>Common</th>
+            </tr>
+            @foreach (var item in Model.Tasks)
+            {
+                string selectedRow = "";
+                if (item.TaskID == (int?)ViewData["TaskID"])
+                {
+                    selectedRow = "success";
+                }
+            <tr class="@selectedRow">
+                <td>
+                    @Html.ActionLink(item.TaskID.ToString(), "Index", new { TaskID = item.TaskID })
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Date)
+                </td>
+                <td>
+                    @item.Site.Site
+                </td>
+                <td>
+                    @item.Site.Customer.CustomerName
+                </td>
+                <td>
+                    @item.Progress
+                </td>
+                <td>
+                    @item.Total
+                </td>
+                <td>
+                    @item.Returned
+                </td>
+                <td>
+                    @item.Quality
+                </td>
+                <td>
+                    @item.Comment
+                </td>
+            </tr>
+            }
+        </table>
+    }
+    @if (Model.DayWorks != null)
+    {
+        <h4>
+            Day works in Selected Task
+        </h4>
+        <table class="table">
+            <tr>
+                <th>Day work No.</th>
+                <th>Date</th>
+                <th>Type</th>
+                <th>Description</th>
+                <th>Qty</th>
+                <th>Uom</th>
+                <th>Truck</th>
+                <th>Scaffolder</th>
+                <th>Number Of Workers</th>
+            </tr>
+            @foreach (var item in Model.DayWorks)
+            {
+            <tr>
+                <td>
+                    @item.DayWorkID
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Date)
+                </td>
+                <td>
+                    @item.Type
+                </td>
+                <td>
+                    @item.Description
+                </td>
+                <td>
+                    @item.Qty
+                </td>
+                <td>
+                    @item.Uom
+                </td>
+                <td>
+                    @item.Truck
+                </td>
+                <td>
+                    @item.Scaffolder
+                </td>
+                <td>
+                    @item.NumOfWorkers
+                </td>
+            </tr>
+            }
+        </table>
+    }*@

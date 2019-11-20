@@ -1,0 +1,125 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - TowerScaffolding</title>
+
+    <environment include="Development">
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+        <link rel="stylesheet" href="~/css/site.css" />
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    </environment>
+    <environment exclude="Development">
+        <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
+              asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
+              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
+        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
+    </environment>
+    <style>
+    /* unvisited link 
+    a:link {
+        color: blue;
+    }*/
+
+    /* visited link 
+    a:visited {
+        color: blue;
+    }*/
+
+    /* mouse over link */
+    a:hover {
+        color: blue;
+    }
+
+    /* selected link */
+        a:active {
+            color: darkblue;   
+        }
+</style>
+</head>
+<body>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand" style="padding:5px 20px">
+                    <img src="~/images/TSLogo.png">
+                </a>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <li><a asp-area="" asp-controller="Projects" asp-action="Index">Projects</a></li>
+                        <li><a asp-area="" asp-controller="Tasks" asp-action="Index">Tasks</a></li>
+                        <li><a asp-area="" asp-controller="DayWorks" asp-action="Index">Day Work</a></li>
+                        <li><a asp-area="" asp-controller="Leadinghands" asp-action="Index">Leading Hand</a></li>
+                        <li><a asp-area="" asp-controller="Customers" asp-action="Index">Customers</a></li>
+                    }
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <li><a asp-area="" asp-controller="AdminApplicationUsers" asp-action="Index">Staffs</a></li>
+                    }
+                </ul>
+                <partial name="_LoginPartial" />
+                <div class="col-md-2 pull-right">
+                    <form class="navbar-form" role="search"
+                          asp-action="@ViewData["CurrentPage"]"
+                          asp-route-id="@ViewData["ID"]"
+                          asp-route-start="@ViewData["Start"]"
+                          asp-route-end="@ViewData["End"]" method="get">
+                        <div class="input-group add-on">
+                            <input type="text" class="form-control" placeholder="Search for..." name="SearchString" value="@ViewData["CurrentFilter"]" />
+                            <div class="input-group-btn">
+                                <button class="btn btn-default" type="submit">
+                                    <svg aria-hidden="true" class="svg-icon iconSearch" width="15" height="15"><path d="M12.86 11.32L18 16.5 16.5 18l-5.18-5.14v-.35a7 7 0 1 1 1.19-1.19h.35zM7 12A5 5 0 1 0 7 2a5 5 0 0 0 0 10z"></path></svg>@*<i class="glyphicon glyphicon-search"></i>*@
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                @*@await Html.PartialAsync("_LoginPartial")*@
+            </div>
+        </div>
+    </nav>
+
+    <partial name="_CookieConsentPartial" />
+
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; 2019 - Tower Scaffolding</p>
+        </footer>
+    </div>
+
+    <environment include="Development">
+        <script src="~/lib/jquery/dist/jquery.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+        <script src="~/js/site.js" asp-append-version="true"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.3.1.min.js"
+                asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+                asp-fallback-test="window.jQuery"
+                crossorigin="anonymous"
+                integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT">
+        </script>
+        <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/bootstrap.min.js"
+                asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
+                asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
+                crossorigin="anonymous"
+                integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa">
+        </script>
+        <script src="~/js/site.min.js" asp-append-version="true"></script>
+    </environment>
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

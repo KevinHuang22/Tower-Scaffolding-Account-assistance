@@ -1,0 +1,506 @@
+﻿@model PaginatedList<TowerScaffolding.Models.Task>
+
+@{
+    ViewData["Title"] = "Tasks";
+}
+
+<h2>Tasks</h2>
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+@if (ViewData["CurrentFillter"] != null)
+{
+    <a asp-action="Index">Back to Full List</a>
+}
+@if (ViewData["LHID"] != null)
+{
+    <a asp-controller="LeadingHands" asp-action="Index">Back to Leading hands list</a>
+}
+
+<center>
+    <form asp-action="Index"
+          asp-route-currentFilter="@ViewData["CurrentFilter"]"
+          asp-route-lhId="@ViewData["LHID"]"
+          asp-route-status="@ViewData["Status"]"
+          asp-route-returned="@ViewData["Returned"]">
+        <p>
+            From: <input type="date" name="start" value="@ViewData["Start"]" />
+            to: <input type="date" name="end" value="@ViewData["End"]" />
+            <input type="submit" name="submit" value="Search" />
+        </p>
+    </form>
+
+</center>
+<hr />
+<table class="table">
+    <thead>
+        <tr>
+            @*<th>
+                    <a asp-action="Index" asp-route-sortOrder="@ViewData["IDSortParm"]"
+                       asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                       asp-route-start="@ViewData["Start"]"
+                       asp-route-end="@ViewData["End"]">
+                        Task No.
+                    </a>
+                </th>*@
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["DateSortParm"]"
+                   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                   asp-route-lhId="@ViewData["LHID"]"
+                   asp-route-start="@ViewData["Start"]"
+                   asp-route-end="@ViewData["End"]"
+                   asp-route-status="@ViewData["Status"]"
+                   asp-route-returned="@ViewData["Returned"]">
+                    Date
+                </a>
+            </th>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["CustomerSortParm"]"
+                   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                   asp-route-lhId="@ViewData["LHID"]"
+                   asp-route-start="@ViewData["Start"]"
+                   asp-route-end="@ViewData["End"]"
+                   asp-route-status="@ViewData["Status"]"
+                   asp-route-returned="@ViewData["Returned"]">
+                    Customer
+                </a>
+            </th>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["SiteSortParm"]"
+                   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                   asp-route-lhId="@ViewData["LHID"]"
+                   asp-route-start="@ViewData["Start"]"
+                   asp-route-end="@ViewData["End"]"
+                   asp-route-status="@ViewData["Status"]"
+                   asp-route-returned="@ViewData["Returned"]">
+                    Site
+                </a>
+            </th>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["LHSortParm"]"
+                   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                   asp-route-lhId="@ViewData["LHID"]"
+                   asp-route-start="@ViewData["Start"]"
+                   asp-route-end="@ViewData["End"]"
+                   asp-route-status="@ViewData["Status"]"
+                   asp-route-returned="@ViewData["Returned"]">
+                    L.H.
+                </a>
+            </th>
+            @*<th>
+                    Progerss
+                </th>*@
+            <th>
+                Start
+            </th>
+            <th>
+                Finish
+            </th>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["TotalSortParm"]"
+                   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                   asp-route-lhId="@ViewData["LHID"]"
+                   asp-route-start="@ViewData["Start"]"
+                   asp-route-end="@ViewData["End"]"
+                   asp-route-status="@ViewData["Status"]"
+                   asp-route-returned="@ViewData["Returned"]">
+                    Total
+                </a>
+            </th>
+            <th>
+                NoS
+            </th>
+            @{
+                int countU = 0, countS = 0, countH = 0;
+                foreach (var task in Model)
+                {
+                    countU += task.U;
+                    countS += task.S;
+                    countH += task.H;
+                }
+            }
+            <th>
+                U(@countU)
+            </th>
+            <th>
+                S(@countS)
+            </th>
+            <th>
+                H(@countH)
+            </th>
+            <th>
+                @*<a asp-action="Index" asp-route-sortOrder="@ViewData["ReturnedSortParm"]"
+                       asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                       asp-route-lhId="@ViewData["LHID"]"
+                       asp-route-start="@ViewData["Start"]"
+                       asp-route-end="@ViewData["End"]">
+                        Returned
+                    </a>
+                *@
+                @{ var returned = "";
+                    returned = ViewData["Returned"] == null ? "Returned" : ViewData["Returned"].ToString();
+                    if(returned == "OnTime")
+                    {
+                        returned = "On Time";
+                    }
+                }
+                <div class="btn-group">
+                    <button class="btn btn-default btn-xs dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        @returned<span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a asp-action="Index" asp-route-returned="OnTime"
+                               asp-route-status="@ViewData["Status"]"
+                               asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                               asp-route-lhId="@ViewData["LHID"]"
+                               asp-route-start="@ViewData["Start"]"
+                               asp-route-end="@ViewData["End"]">
+                                On Time
+                            </a>
+                        </li>
+                        <li>
+                            <a asp-action="Index" asp-route-returned="Late"
+                               asp-route-status="@ViewData["Status"]"
+                               asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                               asp-route-lhId="@ViewData["LHID"]"
+                               asp-route-start="@ViewData["Start"]"
+                               asp-route-end="@ViewData["End"]">Late</a>
+                        </li>
+                        <li>
+                            <a asp-action="Index" asp-route-returned="Assisted"
+                               asp-route-status="@ViewData["Status"]"
+                               asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                               asp-route-lhId="@ViewData["LHID"]"
+                               asp-route-start="@ViewData["Start"]"
+                               asp-route-end="@ViewData["End"]">Assisted</a>
+                        </li>
+                        <li>
+                            <a asp-action="Index" asp-route-returned="Missing"
+                               asp-route-status="@ViewData["Status"]"
+                               asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                               asp-route-lhId="@ViewData["LHID"]"
+                               asp-route-start="@ViewData["Start"]"
+                               asp-route-end="@ViewData["End"]">Missing</a>
+                        </li>
+                        <li role="separator" class="divider"></li>
+                        <li>
+                            <a asp-action="Index" asp-route-returned=""
+                               asp-route-status="@ViewData["Status"]"
+                               asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                               asp-route-lhId="@ViewData["LHID"]"
+                               asp-route-start="@ViewData["Start"]"
+                               asp-route-end="@ViewData["End"]">
+                                All
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </th>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["QualitySortParm"]"
+                   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                   asp-route-lhId="@ViewData["LHID"]"
+                   asp-route-start="@ViewData["Start"]"
+                   asp-route-end="@ViewData["End"]"
+                   asp-route-status="@ViewData["Status"]"
+                   asp-route-returned="@ViewData["Returned"]">
+                    Quality
+                </a>
+            </th>
+            <th>
+                @*<a asp-action="Index" asp-route-sortOrder="@ViewData["StatusSortParm"]"
+                       asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                       asp-route-lhId="@ViewData["LHID"]"
+                       asp-route-start="@ViewData["Start"]"
+                       asp-route-end="@ViewData["End"]">
+                        Status
+                    </a>*@
+                @{ var status = "";
+                    status = ViewData["Status"] == null ? "Status" : ViewData["Status"].ToString();
+                }
+                <div class="btn-group">
+                    <button class="btn btn-default btn-xs dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        @status <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a asp-action="Index"
+                               asp-route-status="Verified"
+                               asp-route-returned="@ViewData["Returned"]"
+                               asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                               asp-route-lhId="@ViewData["LHID"]"
+                               asp-route-start="@ViewData["Start"]"
+                               asp-route-end="@ViewData["End"]">Verified</a>
+                        </li>
+                        <li>
+                            <a asp-action="Index"
+                               asp-route-status="Unverified"
+                               asp-route-returned="@ViewData["Returned"]"
+                               asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                               asp-route-lhId="@ViewData["LHID"]"
+                               asp-route-start="@ViewData["Start"]"
+                               asp-route-end="@ViewData["End"]">Unverified</a>
+                        </li>
+                        <li>
+                            <a asp-action="Index"
+                               asp-route-status="Invoiced"
+                               asp-route-returned="@ViewData["Returned"]"
+                               asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                               asp-route-lhId="@ViewData["LHID"]"
+                               asp-route-start="@ViewData["Start"]"
+                               asp-route-end="@ViewData["End"]">Invoiced</a>
+                        </li>
+                        <li role="separator" class="divider"></li>
+                        <li>
+                            <a asp-action="Index" 
+                               asp-route-returned="@ViewData["Returned"]"
+                               asp-route-status=""
+                               asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                               asp-route-lhId="@ViewData["LHID"]"
+                               asp-route-start="@ViewData["Start"]"
+                               asp-route-end="@ViewData["End"]">
+                                All
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </th>
+            <th>
+                <a asp-action="ExportExcel"
+                   asp-route-status="@ViewData["Status"]"
+                   asp-route-returned="@ViewData["Returned"]"
+                   asp-route-start="@ViewData["Start"]"
+                   asp-route-searchString="@ViewData["CurrentFilter"]"
+                   asp-route-lhId="@ViewData["LHID"]"
+                   asp-route-end="@ViewData["End"]">
+                    Export Excel
+                </a>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                @*<td>
+                        @Html.DisplayFor(modelItem => item.TaskID)
+                    </td>*@
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.TaskID">
+                        @Html.DisplayFor(modelItem => item.Date)
+                    </a>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Site.Customer.CustomerName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Site.Site)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LeadingHand.FullName)
+                </td>
+                @*<td>
+                        @Html.DisplayFor(modelItem => item.Progress)
+                    </td>*@
+                <td>
+                    @Html.DisplayFor(modelItem => item.Start)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Finish)
+                </td>
+                <td>
+                    @item.Total.ToString("0.##") hrs
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NumberOfStaff)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.U)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.S)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.H)
+                </td>
+                <td>
+                @if (item.Returned == Returned.OnTime)
+                {
+                    <p>On Time</p>
+                }
+                else
+                {
+                    @Html.DisplayFor(modelItem => item.Returned)
+                }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Quality)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TaskStatus)
+                </td>
+                <td>
+                    <a asp-action="ViewDayWorks" asp-route-lhId="@ViewData["LHID"]" asp-route-id="@item.TaskID">View DWs</a>
+                    <a asp-action="Edit" asp-route-id="@item.TaskID">Edit</a>
+                    <a asp-action="Delete" asp-route-id="@item.TaskID">
+                        Del
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<hr />
+<div class="row">
+    <div class="col-sm-3">
+        <strong>
+            Total hours:
+            @*@{TimeSpan TotalHrs = new TimeSpan(0, 0, 0);}*@
+            @{double TotalHrs = 0;}
+            @foreach (var item in Model)
+            {
+                TotalHrs = item.Total + TotalHrs;
+            }
+            @TotalHrs.ToString("0.##") hrs
+        </strong>
+    </div>
+    <div class="col-sm-2">
+        <strong>
+            Good:
+            @{int TotalGood = 0;}
+            @foreach (var item in Model)
+            {
+                if (item.Quality == Quality.Good) { TotalGood++; }
+            }
+            @TotalGood
+        </strong>
+    </div>
+    <div class="col-sm-2">
+        <strong>
+            Bad:
+            @{int TotalBad = 0;}
+            @foreach (var item in Model)
+            {
+                if (item.Quality == Quality.Bad) { TotalBad++; }
+            }
+            @TotalBad
+        </strong>
+    </div>
+    <div class="col-sm-2">
+        <strong>
+            Average:
+            @{int TotalAverage = 0;}
+            @foreach (var item in Model)
+            {
+                if (item.Quality == Quality.Average) { TotalAverage++; }
+            }
+            @TotalAverage
+        </strong>
+    </div>
+    <div class="col-sm-2">
+        <strong>
+            Returned:
+            @{int TotalReturned = 0;}
+            @foreach (var item in Model)
+            {
+                if (item.Returned != Returned.Missing) { TotalReturned++; }
+            }
+            @TotalReturned
+        </strong>
+    </div>
+</div>
+
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+    var pagelstCount = Model.TotalPage;
+    var pageDisplayed = 5;
+}
+<div class="container">
+    <div class="row text-center">
+        <a asp-action="Index"
+           asp-route-sortOrder="@ViewData["CurrentSort"]"
+           asp-route-page="@(Model.PageIndex - 1)"
+           asp-route-start="@ViewData["Start"]"
+           asp-route-end="@ViewData["End"]"
+           asp-route-currentFilter="@ViewData["CurrentFilter"]"
+           asp-route-status="@ViewData["Status"]"
+           asp-route-returned="@ViewData["Returned"]"
+           class="btn btn-default col-md-2 @prevDisabled">
+            Previous
+        </a>
+        <div class="col-md-6 text-center">
+            @{
+                for (int i = 1; i <= pagelstCount; i++)
+                {
+                    if (i > pageDisplayed && i <= pagelstCount - pageDisplayed)
+                    {
+                        <a>
+                            . . .
+                            @if (Model.PageIndex > pageDisplayed && Model.PageIndex <= pagelstCount - pageDisplayed)
+                            {
+
+                                <strong>@Model.PageIndex</strong>
+
+                            }
+                            . . .
+                        </a>
+                        i = pagelstCount - pageDisplayed;
+                    }
+                    else
+                    {
+                        <a asp-action="Index"
+                           asp-route-sortOrder="@ViewData["CurrentSort"]"
+                           asp-route-page="@i"
+                           asp-route-start="@ViewData["Start"]"
+                           asp-route-end="@ViewData["End"]"
+                           asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                           asp-route-status="@ViewData["Status"]"
+                           asp-route-returned="@ViewData["Returned"]">
+                            @if (i == Model.PageIndex)
+                            {
+                                <strong>@i</strong>
+                            }
+                            else
+                            {
+                                @i
+                            }
+                        </a>
+                    }
+
+                }
+
+            @:</div>
+            }
+
+            <a asp-action="Index"
+               asp-route-sortOrder="@ViewData["CurrentSort"]"
+               asp-route-page="@(Model.PageIndex + 1)"
+               asp-route-start="@ViewData["Start"]"
+               asp-route-end="@ViewData["End"]"
+               asp-route-currentFilter="@ViewData["CurrentFilter"]"
+               asp-route-status="@ViewData["Status"]"
+               asp-route-returned="@ViewData["Returned"]"
+               class="btn btn-default col-md-2 pull-right @nextDisabled">
+                Next
+            </a>
+            <form class=""
+                  asp-action="Index"
+                  asp-route-sortOrder="@ViewData["CurrentSort"]"
+                  asp-route-start="@ViewData["Start"]"
+                  asp-route-end="@ViewData["End"]"
+                  asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                  asp-route-status="@ViewData["Status"]"
+                  asp-route-returned="@ViewData["Returned"]">
+                <div class="input-group add-on">
+                    <input type="text" class="form-control" placeholder="to page.." name="page" value="" />
+                    <div class="input-group-btn">
+                        <button class="btn btn-default" type="submit">
+                            <span class="glyphicon glyphicon-circle-arrow-right"></span>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>

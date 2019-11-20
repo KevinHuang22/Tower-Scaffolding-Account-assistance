@@ -1,0 +1,78 @@
+﻿@model TowerScaffolding.Models.Project
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+<!-- Detail Page from project -->
+<div>
+    <h4>Project</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Site)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Site)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Address)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Address)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Branch)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Branch)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Customer)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Customer.CustomerName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.TowerManager)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.TowerManager)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Status)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Status)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.QS)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.QS)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.SiteManager)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.SiteManager)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Quote)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Quote)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Invoice)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Invoice)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.SiteID">Edit</a> |
+    <a asp-action="Index" asp-route-id=@Model.CustomerID>Back to List</a>
+</div>

@@ -1,0 +1,178 @@
+﻿@model TowerScaffolding.Models.TowerScaffoldingViewModels.CustomerIndexData
+
+@{
+    ViewData["Title"] = "CustomerProjects";
+}
+
+<h2>Selected Customer</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Customer Name
+            </th>
+            <th>
+                Email
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var customer in Model.Customers)
+        {
+            if (customer.ID == (int?)ViewData["ID"])
+            {
+                <tr class="success">
+                    <td>
+                        @Html.DisplayFor(modelItem => customer.CustomerName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => customer.Email)
+                    </td>
+                    <td>
+                        <a asp-action="Index">Back</a> |
+                        <a asp-action="Edit" asp-route-id="@customer.ID">Edit</a> |
+                        <a asp-action="Delete" asp-route-id="@customer.ID">Delete</a>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+@if (Model.Projects.Count() > 0)
+{
+    <h4>
+        Projects of Selected Customer
+    </h4>
+    <table class="table">
+        <tr>
+            <th>
+                <a asp-action="CustomerIndexDetail" asp-route-sortOrder="@ViewData["IDSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">
+                    Site ID
+                </a>
+            </th>
+            <th>
+                <a asp-action="CustomerIndexDetail" asp-route-sortOrder="@ViewData["NameSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">
+                    Site
+                </a>
+            </th>
+            <th>
+                <a asp-action="CustomerIndexDetail" asp-route-sortOrder="@ViewData["AddressSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">
+                    Address
+                </a>
+            </th>
+            <th>
+                <a asp-action="CustomerIndexDetail" asp-route-sortOrder="@ViewData["TMSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">
+                    Tower Manager
+                </a>
+            </th>
+            <th>
+                <a asp-action="CustomerIndexDetail" asp-route-sortOrder="@ViewData["StatusSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">
+                    Status
+                </a>
+            </th>
+            <th>
+                QS
+            </th>
+            <th>
+                Site Manager
+            </th>
+        </tr>
+        @foreach (var project in Model.Projects)
+        {
+            string selectedRow = "";
+            if (project.SiteID == (int?)ViewData["projectId"])
+            {
+                selectedRow = "success";
+            }
+            <tr class="@selectedRow">
+                <td>
+                    @Html.ActionLink(project.SiteID.ToString(), "CustomerIndexDetail", new { projectId = project.SiteID })
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => project.Site)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => project.Address)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => project.TowerManager)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => project.Status)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => project.QS)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => project.SiteManager)
+                </td>
+            </tr>
+        }
+    </table>
+    @if (ViewData["projectId"] != null)
+    {
+        @if (Model.Tasks.Count() > 0)
+        {
+            <h4>Tasks of Selected Project</h4>
+            <table class="table">
+                <tr>
+                    <th>Task No.</th>
+                    <th>Date</th>
+                    <th>Site</th>
+                    <th>Company</th>
+                    <th>Progress</th>
+                    <th>Total</th>
+                    <th>Returned</th>
+                    <th>Quality</th>
+                    <th>Common</th>
+                </tr>
+                @foreach (var task in Model.Tasks)
+                {
+                    <tr>
+                        <td>
+                            @Html.ActionLink(task.TaskID.ToString(), "Index", new { TaskID = task.TaskID })
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => task.Date)
+                        </td>
+                        <td>
+                            @task.Site.Site
+                        </td>
+                        <td>
+                            @task.Site.Customer.CustomerName
+                        </td>
+                        <td>
+                            @task.Progress
+                        </td>
+                        <td>
+                            @task.Total.ToString("0.##") hrs
+                        </td>
+                        <td>
+                            @task.Returned
+                        </td>
+                        <td>
+                            @task.Quality
+                        </td>
+                        <td>
+                            @task.Comment
+                        </td>
+                    </tr>
+                }
+            </table>
+        }
+        else
+        {
+            <h5>There is no tasks belong to Selected Project</h5>
+        }
+    }
+
+}
+else
+{
+    <h4>There is no projects belong to Selected Customer</h4>
+}

@@ -1,0 +1,240 @@
+﻿@model PaginatedList<TowerScaffolding.Models.DayWork>
+
+@{
+    ViewData["Title"] = "DayWorks";
+}
+
+<h2>DayWork Entry</h2>
+
+@if (ViewData["CurrentFillter"] != null)
+{
+    <a asp-action="Index">Back to Full List</a>
+}
+<center>
+    <form asp-action="Index" asp-route-currentFilter="@ViewData["CurrentFilter"]">
+        <p>
+            From: <input type="date" name="start" value="@ViewData["Start"]" />
+            to: <input type="date" name="end" value="@ViewData["End"]" />
+            <input type="submit" name="submit" value="Search" />
+        </p>
+    </form>
+
+</center>
+<hr />
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["IDSortParm"]"
+                   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                   asp-route-start="@ViewData["Start"]"
+                   asp-route-end="@ViewData["End"]">
+                    D/W#
+                </a>
+            </th>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["DateSortParm"]"
+                   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                   asp-route-start="@ViewData["Start"]"
+                   asp-route-end="@ViewData["End"]">
+                    Date
+                </a>
+            </th>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["CustomerSortParm"]"
+                   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                   asp-route-start="@ViewData["Start"]"
+                   asp-route-end="@ViewData["End"]">
+                    Company
+                </a>
+            </th>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["SiteSortParm"]"
+                   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                   asp-route-start="@ViewData["Start"]"
+                   asp-route-end="@ViewData["End"]">
+                    Site
+                </a>
+            </th>
+            @*<th>
+                    <a asp-action="Index" asp-route-sortOrder="@ViewData["TaskSortParm"]"
+                       asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                       asp-route-start="@ViewData["Start"]"
+                       asp-route-end="@ViewData["End"]">
+                        Task#
+                    </a>
+                </th>*@
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["TypeSortParm"]"
+                   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                   asp-route-start="@ViewData["Start"]"
+                   asp-route-end="@ViewData["End"]">
+                    Type
+                </a>
+            </th>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["LHSortParm"]"
+                   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                   asp-route-start="@ViewData["Start"]"
+                   asp-route-end="@ViewData["End"]">
+                    Leading Hand
+                </a>
+            </th>
+            <th>
+                Qty
+            </th>
+            <th>
+                Uom
+            </th>
+            <th>
+                Truck
+            </th>
+            <th>
+                Scaffolder
+            </th>
+            <th>
+                NoW
+            </th>
+            <th>
+                <a asp-action="ExportExcel" asp-route-start="@ViewData["Start"]"
+                   asp-route-searchString="@ViewData["CurrentFilter"]"
+                   asp-route-lhId="@ViewData["LHID"]"
+                   asp-route-end="@ViewData["End"]">Export To Excel</a>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.DayWorkID">
+                        @Html.DisplayFor(modelItem => item.DayWorkID)
+                    </a>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Date)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Task.Site.Customer.CustomerName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Task.Site.Site)
+                </td>
+                @*<td>
+                        @Html.DisplayFor(modelItem => item.Task.TaskID)
+                    </td>*@
+                <td>
+                    @Html.DisplayFor(modelItem => item.Type)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Task.LeadingHand.FullName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Qty)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Uom)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Truck)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Scaffolder)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NumOfWorkers)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.DayWorkID">Edit</a>
+                    <a asp-action="Delete" asp-route-id="@item.DayWorkID">Del</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+    var pagelstCount = Model.TotalPage;
+    var pageDisplayed = 5;
+}
+<div class="container">
+    <div class="row text-center">
+        <a asp-action="Index"
+           asp-route-sortOrder="@ViewData["CurrentSort"]"
+           asp-route-page="@(Model.PageIndex - 1)"
+           asp-route-start="@ViewData["Start"]"
+           asp-route-end="@ViewData["End"]"
+           asp-route-currentFilter="@ViewData["CurrentFilter"]"
+           class="btn btn-default col-md-2 @prevDisabled">
+            Previous
+        </a>
+        <div class="col-md-6 text-center">
+            @{
+                for (int i = 1; i <= pagelstCount; i++)
+                {
+                    if (i > pageDisplayed && i <= pagelstCount - pageDisplayed)
+                    {
+                        <a>
+                            . . .
+                            @if (Model.PageIndex > pageDisplayed && Model.PageIndex <= pagelstCount - pageDisplayed)
+                            {
+
+                                <strong>@Model.PageIndex</strong>
+
+                            }
+                            . . .
+                        </a>
+                        i = pagelstCount - pageDisplayed;
+                    }
+                    else
+                    {
+                        <a asp-action="Index"
+                           asp-route-sortOrder="@ViewData["CurrentSort"]"
+                           asp-route-page="@i"
+                           asp-route-start="@ViewData["Start"]"
+                           asp-route-end="@ViewData["End"]"
+                           asp-route-currentFilter="@ViewData["CurrentFilter"]">
+                            @if (i == Model.PageIndex)
+                            {
+                                <strong>@i</strong>
+                            }
+                            else
+                            {
+                                @i
+                            }
+                        </a>
+                    }
+
+                }
+
+            @:</div>
+            }
+
+            <a asp-action="Index"
+               asp-route-sortOrder="@ViewData["CurrentSort"]"
+               asp-route-page="@(Model.PageIndex + 1)"
+               asp-route-start="@ViewData["Start"]"
+               asp-route-end="@ViewData["End"]"
+               asp-route-currentFilter="@ViewData["CurrentFilter"]"
+               class="btn btn-default col-md-2 pull-right @nextDisabled">
+                Next
+            </a>
+            <form class=""
+                  asp-action="Index"
+                  asp-route-sortOrder="@ViewData["CurrentSort"]"
+                  asp-route-start="@ViewData["Start"]"
+                  asp-route-end="@ViewData["End"]"
+                  asp-route-currentFilter="@ViewData["CurrentFilter"]">
+                <div class="input-group add-on">
+                    <input type="text" class="form-control" placeholder="to page.." name="page" value="" />
+                    <div class="input-group-btn">
+                        <button class="btn btn-default" type="submit">
+                            <span class="glyphicon glyphicon-circle-arrow-right"></span>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>

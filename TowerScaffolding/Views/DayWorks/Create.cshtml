@@ -1,0 +1,81 @@
+﻿@model TowerScaffolding.Models.DayWork
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h2>Create</h2>
+
+<h4>DayWork</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="DayWorkID" class="control-label"></label>
+                <input asp-for="DayWorkID" class="form-control" />
+                <span asp-validation-for="DayWorkID" class="text-danger"></span>
+                <p><font color="red">The Day Work No. must be unique and never changed</font></p>
+            </div>
+            <div class="form-group">
+                <label asp-for="Date" class="control-label"></label>
+                <input asp-for="Date" class="form-control" />
+                <span asp-validation-for="Date" class="text-danger"></span>
+            </div>
+            @*<div class="form-group">
+                <label asp-for="TaskID" class="control-label"></label>
+                <select asp-for="TaskID" class="form-control" asp-items="ViewBag.TaskID">
+                    <option value="">-- Select Task --</option>
+                </select>
+                <span asp-validation-for="TaskID" class="text-danger"></span>
+            </div>*@
+            <input asp-for="TaskID" type="hidden" class="form-control" value="@ViewBag.TaskID" />
+            <div class="form-group">
+                <label asp-for="Type" class="control-label"></label>
+                <input asp-for="Type" class="form-control" />
+                <span asp-validation-for="Type" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <textarea asp-for="Description" class="form-control" aria-label="Description"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input asp-for="Qty" type="hidden" class="form-control" />
+                <span asp-validation-for="Qty" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Qty</label>
+                <input id="qtyFormular" class="form-control"
+                       onchange="(function () {document.getElementById('Qty').value = eval(document.getElementById('qtyFormular').value);})()" />
+            </div>
+            <div class="form-group">
+                <label asp-for="Truck" class="control-label"></label>
+                <input asp-for="Truck" class="form-control" />
+                <span asp-validation-for="Truck" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Scaffolder" class="control-label"></label>
+                <input asp-for="Scaffolder" class="form-control" />
+                <span asp-validation-for="Scaffolder" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NumOfWorkers" class="control-label"></label>
+                <input asp-for="NumOfWorkers" class="form-control" />
+                <span asp-validation-for="NumOfWorkers" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-default" asp-route-preUrl="@ViewBag.preUrl"/>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a herf="@ViewBag.preUrl">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
